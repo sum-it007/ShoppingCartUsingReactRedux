@@ -12,8 +12,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         totalItems: state.totalItems + 1,
         totalPrice:state.totalPrice+action.item.price,
-        items: [...state.items,action.item.name],
+        items: [...state.items,action.item],
+
       };
+    case 'DELETE_ITEM':
+      return{
+        ...state,
+        totalItems: state.totalItems - 1,
+        totalPrice:state.totalPrice - action.item.price,
+        items: state.items.filter(item => item.name !== action.item.name),
+      }
     default:
       return state;
   }

@@ -1,7 +1,8 @@
 import React from 'react'
 import {FlatList, Text,TouchableOpacity,View,StyleSheet} from 'react-native'
 import { connect } from 'react-redux'
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+ 
 const Cart = (props) => {
     return ( 
         <View>
@@ -17,7 +18,13 @@ const Cart = (props) => {
         renderItem={({item})=>{
             return(
                 <View style={styles.listItem}>
-                <Text>{item}</Text>
+                <Text style={{flex:1}}>{item.name}</Text>
+                <TouchableOpacity><Text>+</Text></TouchableOpacity>
+                <Text>No.</Text>
+                <TouchableOpacity><Text>-</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>props.deleteItem(item)}>
+                    <FontAwesome name='trash' size={25}/>
+                </TouchableOpacity>
                 </View>
             )
         }}
@@ -33,12 +40,17 @@ const mapStateToProps = (state) => ({
     totalPrice : state.totalPrice
 })
 
-export default connect(mapStateToProps)(Cart)
+const mapDispatchToProps = (dispatch) => ({
+    deleteItem : (item) => dispatch({type:'DELETE_ITEM',item:item})
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Cart)
 
 const styles = StyleSheet.create({
     listItem:{
         margin:10,
         marginHorizontal:20,
+        flexDirection:'row'
     },
     username:{
         fontSize:25,
