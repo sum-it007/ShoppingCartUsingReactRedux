@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+
 const initialState = {
   user: 'Sumit',
   totalItems: 0,
@@ -18,7 +20,6 @@ const reducer = (state = initialState, action) => {
           totalPrice: state.totalPrice + action.item.price,
         }
       }
-      // if (cartItem.count == 0) {
         cartItem.count++;
         return {
           ...state,
@@ -55,6 +56,15 @@ const reducer = (state = initialState, action) => {
       }
       case 'DECREASE_ITEM' :
         index = state.items.findIndex((val)=>val.id===action.item.id)
+        if(state.items[index].count == 0)
+        {
+          return{
+            ...state,
+            items: state.items.filter((item) => item.id !== action.item.id),
+     
+          }
+        }
+        
         state.items[index].count--;
         return{
           ...state,
