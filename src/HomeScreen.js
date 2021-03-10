@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  Image,
+  Dimensions,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {items} from './items';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {addITEM} from '../redux/actions';
 
 const HomeScreen = (props) => {
-  const addHandler = (item) => {
-    props.addItem(item);
-  };
   return (
     <View style={styles.main}>
       <View style={styles.title}>
@@ -34,15 +34,23 @@ const HomeScreen = (props) => {
       </View>
       <View>
         <FlatList
-          scrollEnabled={false}
           data={items}
           keyExtractor={(item) => item.id}
           renderItem={({item}) => {
             return (
-              <View style={styles.listItems}>
+              <View style={styles.items}>
                 <TouchableOpacity onPress={() => props.addItem(item)}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <Text style={styles.itemPrice}>{item.price}</Text>
+                  <View style={styles.listItems}>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemPrice}>
+                      {'\u20B9'}
+                      {item.price}
+                    </Text>
+                  </View>
+                  <Image
+                    source={{uri: item.imageUrl}}
+                    style={styles.itemImage}
+                  />
                 </TouchableOpacity>
               </View>
             );
@@ -58,7 +66,7 @@ const mapStateToProps = (state) => ({
   totalItems: state.totalItems,
 });
 const mapDispatchToProps = (dispatch) => ({
-  addItem: (item) => dispatch({type: 'ADD_ITEM', item: item}),
+  addItem: (item) => dispatch(addITEM(item)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
@@ -73,16 +81,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listItems: {
-    padding: 15,
     flexDirection: 'row',
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+  },
+  items: {
+    borderWidth: 1,
+    borderColor: 'black',
+    marginVertical: 20,
   },
   itemName: {
     fontSize: 15,
     fontWeight: 'bold',
     flexWrap: 'wrap',
+    flex: 2,
   },
   itemPrice: {
     alignItems: 'center',
+    flex: 1,
   },
   title: {
     flexDirection: 'row',
@@ -97,5 +113,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
     fontSize: 15,
     borderRadius: 20,
+  },
+  itemImage: {
+    height: 300,
+    width: '100%',
   },
 });

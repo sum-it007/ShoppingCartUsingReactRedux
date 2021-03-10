@@ -2,16 +2,22 @@ export const items = [
     {
         id:1,
         name:'iPhone',
-        price:100000
+        price:100000,
+        imageUrl:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-12-r1.jpg',
+        count:0
     },
     {
         id:2,
         name:'macBook',
-        price:150000
+        price:150000,
+        imageUrl:'https://sm.mashable.com/t/mashable_in/review/m/macbook-ai/macbook-air-late-2020-review-the-one-with-apple-silicon-insi_2quc.960.jpg',
+        count:0
     },
     {
         id:3,
         name:'ipad',
-        price:100000
+        price:100000,
+        imageUrl:'https://images-na.ssl-images-amazon.com/images/I/81gd3uyxc3L._AC_SL1500_.jpg',
+        count:0
     }
 ]

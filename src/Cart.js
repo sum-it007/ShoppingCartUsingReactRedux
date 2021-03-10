@@ -1,8 +1,9 @@
 import React from 'react'
-import {FlatList, Text,TouchableOpacity,View,StyleSheet} from 'react-native'
+import {FlatList, Text,TouchableOpacity,View,StyleSheet,Image} from 'react-native'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
- 
+import {delITEM,incITEM,decITEM} from '../redux/actions' 
+
 const Cart = (props) => {
     return ( 
         <View>
@@ -18,13 +19,15 @@ const Cart = (props) => {
         renderItem={({item})=>{
             return(
                 <View style={styles.listItem}>
-                <Text style={{flex:1}}>{item.name}</Text>
-                <TouchableOpacity><Text>+</Text></TouchableOpacity>
-                <Text>No.</Text>
-                <TouchableOpacity><Text>-</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>props.deleteItem(item)}>
+                <Image style={styles.itemImage} source={{uri:item.imageUrl}} />
+                <Text style={{flex:1,paddingHorizontal:15,fontSize:20,fontWeight:'bold'}}>{item.name}</Text>
+                <TouchableOpacity style={styles.addBTN}  onPress={()=>props.increaseItem(item)}><Text>+</Text></TouchableOpacity>
+                <View style={styles.counter} ><Text>{item.count}</Text></View>
+                <TouchableOpacity style={styles.subBTN}  onPress={()=>props.decreaseItem(item)}><Text>-</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.delBtn} onPress={()=>props.deleteItem(item)}>
                     <FontAwesome name='trash' size={25}/>
                 </TouchableOpacity>
+
                 </View>
             )
         }}
@@ -41,7 +44,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    deleteItem : (item) => dispatch({type:'DELETE_ITEM',item:item})
+    deleteItem : (item) => dispatch(delITEM(item)),
+    decreaseItem : (item) => dispatch(decITEM(item)),
+    increaseItem : (item) => dispatch(incITEM(item)),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(Cart)
@@ -50,11 +55,40 @@ const styles = StyleSheet.create({
     listItem:{
         margin:10,
         marginHorizontal:20,
-        flexDirection:'row'
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    addBTN:{
+        padding:10,
+        borderWidth:1,
+       borderRadius:10,
+       borderRightWidth:0 ,
+       marginRight:-10,
+       borderTopRightRadius:0,
+       borderBottomRightRadius:0
+    },
+    subBTN:{
+        padding:10,
+        borderWidth:1,
+        borderRadius:10,
+        borderLeftWidth:0,
+        marginLeft:-10,
+        borderTopLeftRadius:0,
+        borderBottomLeftRadius:0
+    },
+    counter:{
+        padding:10,
+        borderWidth:1,
+        borderLeftWidth:0,
+        borderRightWidth:0
     },
     username:{
         fontSize:25,
         fontWeight:'bold'
+    },
+    delBtn:{
+        padding:20
     },
     cartInfo:{
         margin:15,
@@ -65,5 +99,9 @@ const styles = StyleSheet.create({
     cartInfoText3:{
         fontSize:18,
         marginTop:30
+    },
+    itemImage:{
+        width:60,
+        height:80,
     }
 })
